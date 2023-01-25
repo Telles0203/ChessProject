@@ -13,11 +13,11 @@ namespace ChessConsole
                 {
                     if (board.piece(i, j) == null)
                     {
-                        Console.Write("__|");
+                        Console.Write("___|");
                     }
                     else
                     {
-                        Console.Write($"{board.piece(i, j)}");
+                        Console.Write($"_{board.piece(i, j)}_|");
                     }
                 }
                 Console.WriteLine();
