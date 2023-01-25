@@ -21,10 +21,40 @@ namespace ChessBoard
             return pieces[line, column];
         }
 
+
+        public Piece piece(Position position)
+        {
+            return pieces[position.Line, position.Column];
+        }
+
+
+        public bool HavePiece(Position position)
+        {
+            ValidPosition(position);
+            return piece(position) != null;
+        }
+
+
         public void InsertPiece(Piece piece, Position position)
         {
             pieces[position.Line, position.Column] = piece;
             piece.Position = position;
+        }
+
+
+
+
+        public bool ValidPosition(Position position)
+        {
+            return (position.Line < 0 || position.Line >= Lines || position.Column < 0 || position.Column >= Columns) ? false : true;
+        }
+
+        public void PositionValid(Position position)
+        {
+            if (!ValidPosition(position))
+            {
+                throw new ArgumentException("Posição Inválida");
+            }
         }
     }
 }
