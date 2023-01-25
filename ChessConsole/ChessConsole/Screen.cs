@@ -8,20 +8,37 @@ namespace ChessConsole
         {
             for (int i = 0; i < board.Lines; i++)
             {
-                Console.Write("|");
+                Console.Write($"{8 - i} |");
                 for (int j = 0; j < board.Columns; j++)
                 {
                     if (board.piece(i, j) == null)
                     {
-                        Console.Write("___|");
+                        Console.Write("-|");
                     }
                     else
                     {
-                        Console.Write($"_{board.piece(i, j)}_|");
+                        PrintPiece(board.piece(i, j));
                     }
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine($"   a b c d e f g h");
+        }
+        public static void PrintPiece(Piece piece)
+        {
+            if(piece.Color== Color.White)
+            {
+                Console.Write($"{piece}|");
+            }
+            else
+            {
+                ConsoleColor var1 = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write($"{piece}");
+                Console.ForegroundColor = var1;
+                Console.Write("|");
+            }
         }
     }
+
 }
