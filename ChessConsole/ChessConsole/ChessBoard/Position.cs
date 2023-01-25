@@ -11,6 +11,13 @@ namespace ChessBoard
             Line = line;
             Column = column;
         }
+        
+        public void ValuesDefinition (int line, int column)
+        {
+            Line = line;
+            Column = column;
+        }
+        
         public override string ToString()
         {
             return $"{Line}, {Column}";
