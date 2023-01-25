@@ -24,7 +24,7 @@ namespace Chess
             Position position = new Position(0, 0);
 
             //Cima
-            position.ValuesDefinition(position.Line - 1, position.Column);
+            position.ValuesDefinition(Position.Line - 1, Position.Column);
             while (Board.ValidPosition(position) && CanMove(position))
             {
                 matrix[position.Line, position.Column] = true;
@@ -35,7 +35,7 @@ namespace Chess
             }
 
             //Baixo
-            position.ValuesDefinition(position.Line + 1, position.Column);
+            position.ValuesDefinition(Position.Line + 1, Position.Column);
 
             while (Board.ValidPosition(position) && CanMove(position))
             {
@@ -48,7 +48,7 @@ namespace Chess
             }
 
             //Direita
-            position.ValuesDefinition(position.Line, position.Column + 1);
+            position.ValuesDefinition(Position.Line, Position.Column + 1);
 
             while (Board.ValidPosition(position) && CanMove(position))
             {
@@ -61,7 +61,7 @@ namespace Chess
             }
            
             //esquerda
-            position.ValuesDefinition(position.Line, position.Column - 1);
+            position.ValuesDefinition(Position.Line, Position.Column - 1);
 
             while (Board.ValidPosition(position) && CanMove(position))
             {

@@ -10,6 +10,7 @@ namespace Chess
 
         }
 
+
         private bool CanMove(Position position)
         {
             Piece piece = Board.piece(position);
@@ -26,14 +27,14 @@ namespace Chess
             Position position = new Position(0, 0);
 
             //Cima
-            position.ValuesDefinition(position.Line - 1, position.Column);
+            position.ValuesDefinition(Position.Line - 1, Position.Column);
             if (Board.ValidPosition(position) && CanMove(position))
             {
                 matrix[position.Line, position.Column] = true;
             }
 
             //Cima direita
-            position.ValuesDefinition(position.Line - 1, position.Column + 1);
+            position.ValuesDefinition(Position.Line - 1, Position.Column + 1);
 
             if (Board.ValidPosition(position) && CanMove(position))
             {
@@ -41,7 +42,7 @@ namespace Chess
             }
 
             //Direita
-            position.ValuesDefinition(position.Line, position.Column +1);
+            position.ValuesDefinition(Position.Line, Position.Column + 1);
 
             if (Board.ValidPosition(position) && CanMove(position))
             {
@@ -49,7 +50,7 @@ namespace Chess
             }
 
             //Baixo direita
-            position.ValuesDefinition(position.Line + 1, position.Column + 1);
+            position.ValuesDefinition(Position.Line + 1, Position.Column + 1);
 
             if (Board.ValidPosition(position) && CanMove(position))
             {
@@ -57,7 +58,7 @@ namespace Chess
             }
 
             //Baixo
-            position.ValuesDefinition(position.Line + 1, position.Column);
+            position.ValuesDefinition(Position.Line + 1, Position.Column);
 
             if (Board.ValidPosition(position) && CanMove(position))
             {
@@ -66,7 +67,7 @@ namespace Chess
 
 
             //Baixo esquerda
-            position.ValuesDefinition(position.Line + 1, position.Column -1);
+            position.ValuesDefinition(Position.Line + 1, Position.Column - 1);
 
             if (Board.ValidPosition(position) && CanMove(position))
             {
@@ -74,7 +75,7 @@ namespace Chess
             }
 
             //esquerda
-            position.ValuesDefinition(position.Line, position.Column -1);
+            position.ValuesDefinition(Position.Line, Position.Column - 1);
 
             if (Board.ValidPosition(position) && CanMove(position))
             {
@@ -82,7 +83,7 @@ namespace Chess
             }
 
             //cima esquerda
-            position.ValuesDefinition(position.Line - 1, position.Column -1);
+            position.ValuesDefinition(Position.Line - 1, Position.Column - 1);
 
             if (Board.ValidPosition(position) && CanMove(position))
             {

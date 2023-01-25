@@ -12,7 +12,7 @@ namespace ChessConsole
 
             try
             {
-                GameChess gameChess= new GameChess();
+                GameChess gameChess = new GameChess();
                 while (!gameChess.GameEnd)
                 {
                     Console.Clear();
@@ -21,11 +21,11 @@ namespace ChessConsole
                     Console.Write("Origin: ");
                     Position origem = Screen.ReadChessPosition().ToPosition();
 
-                    //bool[,] possiblePositions = gameChess.Board.piece(origem).PossibleMoviments();
+                    bool[,] possiblePositions = gameChess.Board.piece(origem).PossibleMoviments();
 
 
-                    //Console.Clear();
-                   // Screen.PrintBoard(gameChess.Board, possiblePositions);
+                    Console.Clear();
+                    Screen.PrintBoard(gameChess.Board, possiblePositions);
 
 
                     Console.Write("Destiny: ");
