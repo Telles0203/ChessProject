@@ -45,6 +45,18 @@ namespace ChessBoard
             piece.Position = position;
         }
 
+        public Piece RemovePiece(Position position)
+        {
+            if (piece(position) == null)
+            {
+                return null;
+            }
+            Piece var1 = piece(position);
+            var1.Position = null;
+            pieces[position.Line, position.Column] = null;
+            return var1;
+
+        }
 
 
 

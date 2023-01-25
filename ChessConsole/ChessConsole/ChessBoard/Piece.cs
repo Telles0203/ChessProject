@@ -16,5 +16,10 @@
             AmountMoviment = 0;
             Position = null;
         }
+
+        public void IncrementAmountMoviment()
+        {
+            AmountMoviment++;
+        }
     }
 }
