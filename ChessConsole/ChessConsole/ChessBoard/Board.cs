@@ -37,6 +37,10 @@ namespace ChessBoard
 
         public void InsertPiece(Piece piece, Position position)
         {
+            if (HavePiece(position))
+            {
+                throw new ExceptionBoard("You have a piece in this position!");
+            }
             pieces[position.Line, position.Column] = piece;
             piece.Position = position;
         }
