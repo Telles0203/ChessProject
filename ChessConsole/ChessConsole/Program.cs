@@ -15,26 +15,42 @@ namespace ChessConsole
                 GameChess gameChess = new GameChess();
                 while (!gameChess.GameEnd)
                 {
-                    Console.Clear();
-                    Screen.PrintBoard(gameChess.Board);
-                    Console.WriteLine();
-                    Console.Write("Origin: ");
-                    Position origem = Screen.ReadChessPosition().ToPosition();
 
-                    bool[,] possiblePositions = gameChess.Board.piece(origem).PossibleMoviments();
-
-
-                    Console.Clear();
-                    Screen.PrintBoard(gameChess.Board, possiblePositions);
+                    try
+                    {
+                        Console.Clear();
+                        Screen.PrintBoard(gameChess.Board);
+                        Console.WriteLine();
+                        Console.WriteLine($"Turn: {gameChess.Turn}");
+                        Console.WriteLine($"Waiting move: {gameChess.PlayerActual}");
 
 
-                    Console.Write("Destiny: ");
-                    Position destiny = Screen.ReadChessPosition().ToPosition();
+                        Console.WriteLine();
+                        Console.Write("Origin: ");
+                        Position origem = Screen.ReadChessPosition().ToPosition();
+                        gameChess.OriginPositionValidation(origem);
 
-                    gameChess.ExecuteMoviment(origem, destiny);
+
+                        bool[,] possiblePositions = gameChess.Board.piece(origem).PossibleMoviments();
+
+
+                        Console.Clear();
+                        Screen.PrintBoard(gameChess.Board, possiblePositions);
+
+
+                        Console.WriteLine();
+                        Console.Write("Destiny: ");
+                        Position destiny = Screen.ReadChessPosition().ToPosition();
+                        gameChess.DestinyPositionValidation(origem, destiny);
+
+                        gameChess.PerformsMove(origem, destiny);
+                    }
+                    catch (ExceptionBoard exception)
+                    {
+                        Console.WriteLine(exception.Message);
+                        Console.ReadLine();
+                    }
                 }
-
-
             }
             catch (ExceptionBoard exception)
             {
