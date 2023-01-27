@@ -19,10 +19,7 @@ namespace ChessConsole
                     try
                     {
                         Console.Clear();
-                        Screen.PrintBoard(gameChess.Board);
-                        Console.WriteLine();
-                        Console.WriteLine($"Turn: {gameChess.Turn}");
-                        Console.WriteLine($"Waiting move: {gameChess.PlayerActual}");
+                        Screen.PrintBoard(gameChess);
 
 
                         Console.WriteLine();
@@ -44,6 +41,8 @@ namespace ChessConsole
                         gameChess.DestinyPositionValidation(origem, destiny);
 
                         gameChess.PerformsMove(origem, destiny);
+
+
                     }
                     catch (ExceptionBoard exception)
                     {

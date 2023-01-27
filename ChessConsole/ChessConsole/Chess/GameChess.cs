@@ -10,6 +10,10 @@ namespace Chess
         public int Turn { get; private set; }
         public Color PlayerActual { get; private set; }
         public bool GameEnd { get; private set; }
+        public bool Check { get; private set; }
+
+        private HashSet<Piece> pieces;
+        private HashSet<Piece> capturedPieces;
 
 
         public GameChess()
@@ -17,22 +21,56 @@ namespace Chess
             Board = new Board(8, 8);
             Turn = 1;
             PlayerActual = Color.White;
+            pieces = new HashSet<Piece>();
+            capturedPieces = new HashSet<Piece>();
             GameEnd = false;
             InsertPieces();
         }
 
-        public void ExecuteMoviment(Position origin, Position destiny)
+        public Piece ExecuteMoviment(Position origin, Position destiny)
         {
             Piece piece = Board.RemovePiece(origin);
             piece.IncrementAmountMoviment();
             Piece capturedPiece = Board.RemovePiece(destiny);
             Board.InsertPiece(piece, destiny);
+            if (capturedPiece != null)
+            {
+                capturedPieces.Add(capturedPiece);
+            }
+            return capturedPiece;
         }
 
+        public void ReturnMoviment(Position origin, Position destiny, Piece capturedPiece)
+        {
+            Piece piece = Board.RemovePiece(destiny);
+            piece.DencrementAmountMoviment();
+            if (capturedPiece != null)
+            {
+                Board.InsertPiece(capturedPiece, destiny);
+                capturedPieces.Remove(capturedPiece);
+            }
+            Board.InsertPiece(piece,origin);
+        }
 
         public void PerformsMove(Position origin, Position destiny)
         {
-            ExecuteMoviment(origin, destiny);
+            Piece capturedPiece = ExecuteMoviment(origin, destiny);
+            
+            
+            if (IsCheck(PlayerActual))
+            {
+                ReturnMoviment(origin, destiny, capturedPiece);
+                throw new ExceptionBoard("You can't stay in check!");
+            }
+            if (IsCheck(AdversaryPlayer(PlayerActual)))
+            {
+                Check = true;
+            }
+            else
+            {
+                Check= false;
+            }
+
             Turn++;
             ChangePlayer();
         }
@@ -59,7 +97,7 @@ namespace Chess
             {
                 throw new ExceptionBoard("Invalid destiny position!");
             }
-            
+
         }
 
 
@@ -74,14 +112,99 @@ namespace Chess
                 PlayerActual = Color.White;
             }
         }
+        public HashSet<Piece> CapturedPieces(Color color)
+        {
+            HashSet<Piece> var = new HashSet<Piece>();
+            foreach (Piece piece in capturedPieces)
+            {
+                if (piece.Color == color)
+                {
+                    var.Add(piece);
+                }
+            }
+            return var;
+        }
+
+        public HashSet<Piece> PieceInGame(Color color)
+        {
+            HashSet<Piece> var = new HashSet<Piece>();
+            foreach (Piece piece in pieces)
+            {
+                if (piece.Color == color)
+                {
+                    var.Add(piece);
+                }
+            }
+            var.ExceptWith(CapturedPieces(color));
+            return var;
+        }
+
+        private Color AdversaryPlayer(Color color)
+        {
+            if (color == Color.White)
+            {
+                return Color.Black;
+            }
+            else
+            {
+                return Color.White;
+            }
+        }
+
+        private Piece King(Color color)
+        {
+            foreach (Piece piece in PieceInGame(color))
+            {
+                if (piece is King)
+                {
+                    return piece;
+                }
+            }
+            return null;//Vale lembrar que não é para acontecer isto.
+        }
+
+        public bool IsCheck(Color color)
+        {
+            Piece king = King(color);
+            if (king == null)
+            {
+                throw new ExceptionBoard($"Don´t have a King {color} in the boardgame");
+            }
+
+
+
+            foreach (Piece piece in PieceInGame(AdversaryPlayer(color)))
+            {
+                bool[,] matriz = piece.PossibleMoviments();
+                if (matriz[king.Position.Line, king.Position.Column])
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
+
+        public void InsertNewPiece(char column, int line, Piece piece)
+        {
+            Board.InsertPiece(piece, new ChessPosition(column, line).ToPosition());
+            pieces.Add(piece);
+        }
         private void InsertPieces()
         {
-            Board.InsertPiece(new Tower(Color.Black, Board), new ChessPosition('a', 7).ToPosition());
-            Board.InsertPiece(new Tower(Color.Black, Board), new ChessPosition('h', 8).ToPosition());
-            Board.InsertPiece(new King(Color.Black, Board), new ChessPosition('d', 8).ToPosition());
-            Board.InsertPiece(new Tower(Color.White, Board), new ChessPosition('a', 1).ToPosition());
-            Board.InsertPiece(new Tower(Color.White, Board), new ChessPosition('h', 1).ToPosition());
-            Board.InsertPiece(new King(Color.White, Board), new ChessPosition('d', 1).ToPosition());
+            //Black
+            InsertNewPiece('a', 8, new Tower(Color.Black, Board));
+            InsertNewPiece('h', 8, new Tower(Color.Black, Board));
+            InsertNewPiece('d', 8, new King(Color.Black, Board));
+
+
+            //White
+            InsertNewPiece('a', 1, new Tower(Color.White, Board));
+            InsertNewPiece('h', 1, new Tower(Color.White, Board));
+            InsertNewPiece('d', 1, new King(Color.White, Board));
+
+
         }
     }
 }

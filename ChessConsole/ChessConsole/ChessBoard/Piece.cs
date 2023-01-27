@@ -21,6 +21,10 @@
         {
             AmountMoviment++;
         }
+        public void DencrementAmountMoviment()
+        {
+            AmountMoviment--;
+        }
 
         public bool HavePossibleMoviments()
         {
