@@ -1,6 +1,7 @@
 ﻿
 
 using ChessBoard;
+using ChessConsole.Chess;
 
 namespace Chess
 {
@@ -49,14 +50,16 @@ namespace Chess
                 Board.InsertPiece(capturedPiece, destiny);
                 capturedPieces.Remove(capturedPiece);
             }
-            Board.InsertPiece(piece,origin);
+            Board.InsertPiece(piece, origin);
         }
+
+
 
         public void PerformsMove(Position origin, Position destiny)
         {
             Piece capturedPiece = ExecuteMoviment(origin, destiny);
-            
-            
+
+
             if (IsCheck(PlayerActual))
             {
                 ReturnMoviment(origin, destiny, capturedPiece);
@@ -68,11 +71,19 @@ namespace Chess
             }
             else
             {
-                Check= false;
+                Check = false;
+            }
+            if (CheckMateTest(AdversaryPlayer(PlayerActual)))
+            {
+                GameEnd= true;
+            }
+            else
+            {
+                Turn++;
+                ChangePlayer();
             }
 
-            Turn++;
-            ChangePlayer();
+            
         }
 
         public void OriginPositionValidation(Position position)
@@ -185,6 +196,40 @@ namespace Chess
             return false;
         }
 
+        public bool CheckMateTest(Color color)
+        {
+            if (!IsCheck(color))
+            {
+                return false;
+            }
+            foreach (Piece piece in PieceInGame(color))
+            {
+                bool[,] matriz = piece.PossibleMoviments();
+
+                for (int i = 0; i < Board.Lines; i++)
+                {
+                    for (int j = 0; j < Board.Columns; j++)
+                    {
+                        if (matriz[i, j])
+                        {
+                            
+                            Position destiny = new Position(i, j);
+                            Position origin = piece.Position;//Tive que adicionar esta parte para funcionar.
+
+                            Piece capturedPiece = ExecuteMoviment(piece.Position, destiny);
+                            bool checkTest = IsCheck(color);
+                            ReturnMoviment(origin, destiny, capturedPiece);
+                            if (!checkTest)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
 
         public void InsertNewPiece(char column, int line, Piece piece)
         {
@@ -195,14 +240,21 @@ namespace Chess
         {
             //Black
             InsertNewPiece('a', 8, new Tower(Color.Black, Board));
-            InsertNewPiece('h', 8, new Tower(Color.Black, Board));
+            //InsertNewPiece('e', 8, new Tower(Color.Black, Board));
             InsertNewPiece('d', 8, new King(Color.Black, Board));
+            InsertNewPiece('c', 7, new Pawn(Color.Black, Board));
+            InsertNewPiece('d', 7, new Pawn(Color.Black, Board));
+            InsertNewPiece('e', 7, new Pawn(Color.Black, Board));
+            InsertNewPiece('f', 7, new Pawn(Color.Black, Board));
+            InsertNewPiece('g', 7, new Pawn(Color.Black, Board));
+            InsertNewPiece('h', 7, new Pawn(Color.Black, Board));
 
 
             //White
             InsertNewPiece('a', 1, new Tower(Color.White, Board));
             InsertNewPiece('h', 1, new Tower(Color.White, Board));
             InsertNewPiece('d', 1, new King(Color.White, Board));
+            InsertNewPiece('d', 2, new Pawn(Color.White, Board));
 
 
         }

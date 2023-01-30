@@ -12,11 +12,24 @@ namespace ChessConsole
             Console.WriteLine();
             PrintCapturedPieces(gameChess);
             Console.WriteLine($"Turn: {gameChess.Turn}");
-            Console.WriteLine($"Waiting move: {gameChess.PlayerActual}");
-            if (gameChess.Check)
+
+            if (!gameChess.GameEnd)
             {
-                Console.WriteLine("CHECK");
+                Console.WriteLine($"Waiting move: {gameChess.PlayerActual}");
+                if (gameChess.Check)
+                {
+                    Console.WriteLine("CHECK");
+                }
             }
+            else
+            {
+                Console.WriteLine("Chekmate");
+                Console.WriteLine($"The winner is {gameChess.PlayerActual}");
+            }
+
+
+
+
         }
 
 

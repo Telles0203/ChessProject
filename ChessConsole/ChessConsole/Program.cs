@@ -44,12 +44,17 @@ namespace ChessConsole
 
 
                     }
+
+
                     catch (ExceptionBoard exception)
                     {
                         Console.WriteLine(exception.Message);
                         Console.ReadLine();
                     }
                 }
+                Console.Clear() ;
+                Screen.PrintBoard(gameChess) ;
+
             }
             catch (ExceptionBoard exception)
             {
